@@ -13,6 +13,17 @@ def process_image():
         # (255, 255, 0)],   <- first row [(255, 255, 0), (255, 243, 0)]    <- second row & so on
         pixels = list(im.getdata())
         print(f'{pixels}')
+        pixel_matrix = [[0 for x in range(im.width)] for y in range(im.height)]
+        pixel_matrix[0][0] = 5
+        print(f'{pixel_matrix[0][0]}')
+        0 for i in range(im.height):
+            0 for j in range(im.width):
+                print(f'X: {x}\nY: {y}')
+                pixel_matrix[x][y] = im.getpixel((x, y))
+                print(f'{pixel_matrix[x][y]}')
+
+        print(f'{pixel_matrix}')
+
 
         # determine brightness of each pixel
 
