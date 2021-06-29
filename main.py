@@ -1,34 +1,32 @@
 from PIL import Image
+import numpy as np
 
 
 def process_image():
     try:
         im = Image.open("ImageInput/mario_test.jpg")
         print(f'File {im.filename} to be processed')
-        print(f'Height: {im.height}px \n Width: {im.width}px')
-        dimensions = (im.height, im.width);
-        print(f'{dimensions}')
-        # first element of array should contain im.width num of elements, each element containing 3 values,
-        # meaning the entire first element is the pixel values for every pixel in the first row ie: [(255, 255, 0),
-        # (255, 255, 0)],   <- first row [(255, 255, 0), (255, 243, 0)]    <- second row & so on
-        pixels = list(im.getdata())
-        print(f'{pixels}')
-        pixel_matrix = [[0 for x in range(im.width)] for y in range(im.height)]
-        pixel_matrix[0][0] = 5
-        print(f'{pixel_matrix[0][0]}')
-        0 for i in range(im.height):
-            0 for j in range(im.width):
-                print(f'X: {x}\nY: {y}')
-                pixel_matrix[x][y] = im.getpixel((x, y))
-                print(f'{pixel_matrix[x][y]}')
+        print(f'Height: {im.height}px \nWidth: {im.width}px')
 
-        print(f'{pixel_matrix}')
-
+        pixel_matrix = np.asarray(im)
+        # for row in pixel_matrix:
+        #     for pixel in row:
+        #         print(f'Pixel: {pixel}')
+        #         for value in pixel:
+        #             print(f'Value: {value}')
 
         # determine brightness of each pixel
 
-        # tie brightness to an ascii character
+        for row in pixel_matrix:
+            for pixel in row:
+                rgb_sum = 0
+                for value in pixel:
+                    rgb_sum += value
+                brightness = rgb_sum / 3
+                print(f'Brightness of pixel {pixel} is {brightness}')
 
+        # tie brightness to an ascii character
+        '`^\",:;Il!i~+_-?][}{1)(|\\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@$'
         # put ascii character into grid
 
         # display image
