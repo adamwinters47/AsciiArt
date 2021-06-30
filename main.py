@@ -1,48 +1,34 @@
-import math
+import os.path
+import time
 
 from PIL import Image
 import numpy as np
 
+from Utilities.FileUtility import format_filename
+from Utilities.ImageUtility import resize_image, write_ascii_to_file
+
 
 def process_image():
     try:
-        im = Image.open("ImageInput/starspittle-gmail-com.jpg")
-        print(f'File {im.filename} to be processed')
-        print(f'Height: {im.height}px \nWidth: {im.width}px')
-        new_im = im.resize((math.floor(im.width/4), math.floor(im.height/4)))
-        print(f'{new_im.size}')
-        pixel_matrix = np.asarray(new_im)
+        start = time.time()
 
-        # determine brightness of each pixel
-        ascii_text = '`^\",:;Il!i~+_-?][}{1)(|\\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@$'
-        divisor = math.floor(255 / 65)
-        print(f'{divisor}')
-        f = open('test.txt', "w+")
-        for row in pixel_matrix:
-            f.write('\n')
-            for pixel in row:
-                rgb_sum = pixel[0] + pixel[1] + pixel[2]
-                print(f'pixel - {pixel}')
-                print(f'{pixel[0]} - {pixel[1]} - {pixel[2]}')
-                # for value in pixel:
-                #     print(f'Value - {value}')
-                #     rgb_sum += value
-                brightness = rgb_sum / 3
+        im = Image.open("ImageToProcess/maybelline.jpg")
 
-                f.write("%s" % ascii_text[math.floor(brightness/divisor)]*3)
+        formatted_filename = format_filename(im.filename)
+
+        print(f'File {im.filename} to be processed with initial size of {im.size}')
+
+        if im.height > 350 or im.width > 350:
+            im = resize_image(im)
+        f = open('AsciiOutput/%s.txt' % formatted_filename, "w+")
+
+        write_ascii_to_file(f, np.asarray(im))
+
         f.close()
-                # print(f'Brightness of pixel {pixel} is {brightness}')
-        # tie brightness to an ascii character
 
-        # put ascii character into grid
+        end = time.time()
 
-        # display image
-
-        # save image to text file in output folder
-
-        # place processed image into processed folder
-
-        # remove image from input folder
+        print(f'Time to process image of size {im.size}: {end-start} seconds')
 
     except FileNotFoundError:
         print('File not found')
