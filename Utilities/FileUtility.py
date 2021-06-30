@@ -11,3 +11,8 @@ def format_filename(original_filename):
 def file_cleanup(image, original_filename, formatted_filename):
     image.save("ProcessedImages/%s-processed.jpg" % formatted_filename)
     os.remove(original_filename)
+
+
+def convert_file(image):
+    print(f'Converting file {image.filename}')
+    return image.convert('RGB')

@@ -5,7 +5,7 @@ from os.path import isfile, join
 from PIL import Image
 import numpy as np
 
-from Utilities.FileUtility import format_filename, file_cleanup
+from Utilities.FileUtility import format_filename, file_cleanup, convert_file
 from Utilities.ImageUtility import resize_image, write_ascii_to_file
 
 
@@ -24,8 +24,7 @@ def process_image():
         formatted_filename = format_filename(original_filename)
         print(f'{im.format}')
         if im.format != "JPEG":
-            print(f'Converting file {original_filename}')
-            im = im.convert('RGB')
+            im = convert_file(im)
 
         max_image_size_in_pixels = 650
         if im.height > max_image_size_in_pixels or im.width > max_image_size_in_pixels:
