@@ -3,12 +3,11 @@ import math
 
 def resize_image(image, max_size_in_pixels):
     original_size = image.size
-    while image.height > max_size_in_pixels or image.width > max_size_in_pixels:
+    while image.height > max_size_in_pixels and image.width > max_size_in_pixels:
         image = image.reduce(2)
-        if image.height < max_size_in_pixels or image.width < max_size_in_pixels:
-            break
     print(f'Image reduced from {original_size} to {image.size}')
     return image
+
 
 # ascii_text variable is a series of 65 characters that are on an ascending scale of brightness. The brightness of
 # each pixel is determined with a weighted scale of RGB values. We then divide that brightness value by 3.95 to

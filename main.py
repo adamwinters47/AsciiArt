@@ -5,7 +5,7 @@ from os.path import isfile, join
 from PIL import Image
 import numpy as np
 
-from Utilities.FileUtility import format_filename
+from Utilities.FileUtility import format_filename, file_cleanup
 from Utilities.ImageUtility import resize_image, write_ascii_to_file
 
 
@@ -18,12 +18,13 @@ def process_image():
         image_start_time = time.time()
 
         im = Image.open("%s/%s" % (folder_to_check, image))
-        print(f'File {im.filename} to be processed with initial size of {im.size}')
+        original_filename = im.filename
+        print(f'File {original_filename} to be processed with initial size of {im.size}')
 
-        formatted_filename = format_filename(im.filename)
-
-        if ".jpg" not in im.filename:
-            print(f'Converting file {im.filename}')
+        formatted_filename = format_filename(original_filename)
+        print(f'{im.format}')
+        if im.format != "JPEG":
+            print(f'Converting file {original_filename}')
             im = im.convert('RGB')
 
         max_image_size_in_pixels = 650
@@ -34,7 +35,7 @@ def process_image():
         write_ascii_to_file(f, np.asarray(im))
 
         f.close()
-
+        file_cleanup(im, original_filename, formatted_filename)
         image_end_time = time.time()
         print(f'Time to process image {formatted_filename} was {image_end_time - image_start_time} seconds')
 
