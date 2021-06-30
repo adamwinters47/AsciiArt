@@ -1,4 +1,3 @@
-import os.path
 import time
 from os import listdir
 from os.path import isfile, join
@@ -17,18 +16,25 @@ def process_image():
 
     for image in images_to_process:
         image_start_time = time.time()
-        im = Image.open("%s/%s" % (folder_to_check, image))
-        formatted_filename = format_filename(im.filename)
 
+        im = Image.open("%s/%s" % (folder_to_check, image))
         print(f'File {im.filename} to be processed with initial size of {im.size}')
 
-        if im.height > 350 or im.width > 350:
-            im = resize_image(im)
+        formatted_filename = format_filename(im.filename)
+
+        if ".jpg" not in im.filename:
+            print(f'Converting file {im.filename}')
+            im = im.convert('RGB')
+
+        max_image_size_in_pixels = 650
+        if im.height > max_image_size_in_pixels or im.width > max_image_size_in_pixels:
+            im = resize_image(im, max_image_size_in_pixels)
         f = open('AsciiOutput/%s.txt' % formatted_filename, "w+")
 
         write_ascii_to_file(f, np.asarray(im))
 
         f.close()
+
         image_end_time = time.time()
         print(f'Time to process image {formatted_filename} was {image_end_time - image_start_time} seconds')
 
@@ -37,6 +43,5 @@ def process_image():
     print(f'Time to process {len(images_to_process)} image(s): {overall_end_time-overall_start_time} seconds')
 
 
-# Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     process_image()
