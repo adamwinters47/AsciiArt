@@ -15,16 +15,21 @@ def process_image():
 
         # determine brightness of each pixel
         ascii_text = '`^\",:;Il!i~+_-?][}{1)(|\\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@$'
-        divisor = 255 / 65
+        divisor = math.floor(255 / 65)
+        print(f'{divisor}')
         f = open('test.txt', "w+")
         for row in pixel_matrix:
             f.write('\n')
             for pixel in row:
-                rgb_sum = 0
-                for value in pixel:
-                    rgb_sum += value
+                rgb_sum = pixel[0] + pixel[1] + pixel[2]
+                print(f'pixel - {pixel}')
+                print(f'{pixel[0]} - {pixel[1]} - {pixel[2]}')
+                # for value in pixel:
+                #     print(f'Value - {value}')
+                #     rgb_sum += value
                 brightness = rgb_sum / 3
-                f.write("%s" % ascii_text[math.floor(brightness/divisor)-8]*3)
+
+                f.write("%s" % ascii_text[math.floor(brightness/divisor)]*3)
         f.close()
                 # print(f'Brightness of pixel {pixel} is {brightness}')
         # tie brightness to an ascii character
