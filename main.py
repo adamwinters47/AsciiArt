@@ -1,5 +1,7 @@
 import os.path
 import time
+from os import listdir
+from os.path import isfile, join
 
 from PIL import Image
 import numpy as np
@@ -9,11 +11,13 @@ from Utilities.ImageUtility import resize_image, write_ascii_to_file
 
 
 def process_image():
-    try:
-        start = time.time()
+    overall_start_time = time.time()
+    folder_to_check = "ImageToProcess"
+    images_to_process = [f for f in listdir(folder_to_check) if isfile(join(folder_to_check, f))]
 
-        im = Image.open("ImageToProcess/maybelline.jpg")
-
+    for image in images_to_process:
+        image_start_time = time.time()
+        im = Image.open("%s/%s" % (folder_to_check, image))
         formatted_filename = format_filename(im.filename)
 
         print(f'File {im.filename} to be processed with initial size of {im.size}')
@@ -25,13 +29,12 @@ def process_image():
         write_ascii_to_file(f, np.asarray(im))
 
         f.close()
+        image_end_time = time.time()
+        print(f'Time to process image {formatted_filename} was {image_end_time - image_start_time} seconds')
 
-        end = time.time()
+    overall_end_time = time.time()
 
-        print(f'Time to process image of size {im.size}: {end-start} seconds')
-
-    except FileNotFoundError:
-        print('File not found')
+    print(f'Time to process {len(images_to_process)} image(s): {overall_end_time-overall_start_time} seconds')
 
 
 # Press the green button in the gutter to run the script.
